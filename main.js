@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
 var margin = { top: 0, right: 30, bottom: 50, left: 60 },
-    width = 650 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    width = 1300 - margin.left - margin.right,
+    height = 800 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#main")
@@ -55,7 +55,7 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
 
     var size = d3.scaleLinear()
         .domain([0, 1300])
-        .range([1, 5]);
+        .range([5, 10]);
 
     var source = {};
     for (var i = 0; i < data.length; i++) {
@@ -103,14 +103,28 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
         .attr("stroke", "white")
 
     // Add the links
+    destToSrc = {}
     var links = svg
         .selectAll("links")
         .data(data)
         .enter()
         .append('path')
         .attr('d', function (d) {
-            start = x(d['Citizenship'])
-            end = x(d['Country_of_Exploitation'])
+            var src = d['Citizenship']
+            var dest = d['Country_of_Exploitation']
+
+            var start = x(src)
+            var end = x(dest)
+
+            if (dest in destToSrc) {
+                var arr = destToSrc[dest];
+                arr.add(src);
+                destToSrc[dest] = arr;
+            } else {
+                destToSrc[dest] = new Set([src]);
+            }
+
+
             return ['M', start, height - 30,
                 'A',
                 (start - end) / 2, ',',
@@ -134,6 +148,7 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
         .attr('transform', function (d) { return ('translate(' + (x(d)) + ',' + (height - 15) + ')rotate(-45)') })
         .style('font-size', 6)
 
+    console.log(destToSrc);
     sourceCircle
         .on('mouseover', function (d) {
             // Highlight the nodes: every node is green except of him
@@ -142,6 +157,9 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
             d3.select(this)
                 .style('opacity', 1)
 
+            targetCircle
+                .style('opacity', function (circle_d) { var set = destToSrc[circle_d]; return set ? (set.has(d) ? 1 : .2) : .2; })
+
             // Highlight the connections
             links
                 .style('stroke', function (link_d) { return link_d['Citizenship'] === d ? '#0000FF' : 'grey'; })
@@ -149,11 +167,12 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
                 .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d ? 4 : 1; })
 
             labels
-                .style('font-size', function (label_d) { return label_d === d ? 16 : 2 })
+                .style('font-size', function (label_d) { var set = destToSrc[label_d]; return label_d === d || (set ? set.has(d) : false) ? 16 : 2 })
                 .attr('y', function (label_d) { return label_d === d ? 10 : 0 })
         })
         .on('mouseout', function (d) {
             sourceCircle.style('opacity', 1)
+            targetCircle.style('opacity', 1)
             links
                 .style('stroke', 'grey')
                 .style('stroke-opacity', .8)
@@ -163,3 +182,27 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
         })
 })
 
+
+
+
+// event listener
+function onYearChanged() {
+    var select = d3.select('#yearSelector').property('value');
+
+    var min = d3.min(cars, function (d) { return d[select]; });
+    var max = d3.max(cars, function (d) { return d[select]; });
+
+    var colorScale = d3.scaleSequential(d3["interpolateBlues"])
+        .domain([min, max]);
+
+    console.log(select);
+    console.log(min);
+    console.log(max);
+    d3.select('g').selectAll('.dot')
+        .style("fill", function (d) { return colorScale(d[select]); });
+}
+
+
+update = function (d) {
+
+}
