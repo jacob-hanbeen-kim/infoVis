@@ -122,6 +122,18 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
         .attr('stroke', 'grey')
         .style('stroke-width', 1)
 
+    var labels = svg
+        .selectAll("labels")
+        .data(countries)
+        .enter()
+        .append('text')
+        .attr('x', 0)
+        .attr('y', 0)
+        .text(function (d) { return (d) })
+        .style('text-anchor', 'end')
+        .attr('transform', function (d) { return ('translate(' + (x(d)) + ',' + (height - 15) + ')rotate(-45)') })
+        .style('font-size', 6)
+
     sourceCircle
         .on('mouseover', function (d) {
             // Highlight the nodes: every node is green except of him
@@ -132,9 +144,13 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
 
             // Highlight the connections
             links
-                .style('stroke', function (link_d) { return link_d['Citizenship'] === d['Citizenship'] || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? color(d.grp) : '$b8b8b8'; })
-                .style('sroke-opacity', function (link_d) { return link_d['Citizenship'] === d['Citizenship'] || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 1 : .2; })
-                .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d['Citizenship'] || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 4 : 1; })
+                .style('stroke', function (link_d) { return link_d['Citizenship'] === d ? '#0000FF' : 'grey'; })
+                //.style('sroke-opacity', function (link_d) { return link_d['Citizenship'] === d || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 1 : .2; })
+                .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d ? 4 : 1; })
+
+            labels
+                .style('font-size', function (label_d) { return label_d === d ? 16 : 2 })
+                .attr('y', function (label_d) { return label_d === d ? 10 : 0 })
         })
         .on('mouseout', function (d) {
             sourceCircle.style('opacity', 1)
@@ -142,6 +158,8 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
                 .style('stroke', 'grey')
                 .style('stroke-opacity', .8)
                 .style('storke-width', '1')
+            labels
+                .style('font-size', 6)
         })
 })
 
