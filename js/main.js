@@ -231,6 +231,7 @@ function update(year) {
                 .style('stroke-width', 1)
             labelsEnter
                 .style('font-size', 6)
+                .attr('y', 0)
         })
 
     targetCircle.exit().remove();
