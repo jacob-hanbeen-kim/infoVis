@@ -218,7 +218,7 @@ function update(year) {
                 //.style('sroke-opacity', function (link_d) { return link_d['Citizenship'] === d || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 1 : .2; })
                 .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d ? 4 : 1; })
 
-            labels
+            labelsEnter
                 .style('font-size', function (label_d) { var set = destToSrc[label_d]; return label_d === d || (set ? set.has(d) : false) ? 16 : 2 })
                 .attr('y', function (label_d) { return label_d === d ? 10 : 0 })
         })
@@ -229,7 +229,7 @@ function update(year) {
                 .style('stroke', 'grey')
                 //.style('stroke-opacity', .8)
                 .style('stroke-width', 1)
-            labels
+            labelsEnter
                 .style('font-size', 6)
         })
 
