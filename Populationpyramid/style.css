@@ -1,0 +1,23 @@
+svg {
+  font: 11px sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: 'sans-serif';
+}
+
+#main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
