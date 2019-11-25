@@ -5,6 +5,9 @@
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
+<!--waypoint-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.js"></script>
+
 <!-- Load color palette -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
@@ -14,6 +17,103 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
+<body>
+    <div id="graphic">
+        <div id="title">
+            <h2>
+                <pre>
+                <strong>Human Trafficking</strong>
+                use of force, fraud, or coercion to obtain some type of labor or commercial sex act.
+                </pre>
+            </h2>
+        </div>
+        <div class="container">
+
+            <div id="div2">
+                <h2>In 2002, most popular human trafficking source was
+                    <strong>RO</strong>.
+                </h2>
+                <p></p>
+            </div>
+            <div id="div4">
+                <h2>
+                    In 2005,
+                    <strong>RO</strong> decrease and
+                    <strong>UA</strong> emerged as a new strong source of human trafficking.
+                </h2>
+            </div>
+            <div id="div6">
+                <h2>In 2007,
+                    <strong>UA</strong> still remains most popular source, and
+                    <strong>SN</strong> becamse one of most popular target for human trafficking.
+                </h2>
+            </div>
+            <div id="div7">
+                <h2>Explore!</h2>
+                <b>Years</b>
+                <select id="stt_yearSelector" onchange="onYearChanged()">
+                    <option value="allYears">All Years</option>
+                    <option value="2002" selected>2002</option>
+                    <option value="2003">2003</option>
+                    <option value="2004">2004</option>
+                    <option value="2005">2005</option>
+                    <option value="2006">2006</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                </select>
+            </div>
+            <div id="div8">
+                <h2>In 2009,
+                    <strong>sexual exploitation</strong> was mor popular than
+                    <strong>forced labour</strong>. However, majority of the exploitation was found to be for
+                    <strong>unknown</strong> reason.
+                </h2>
+            </div>
+            <div id="div9">
+                <h2>Explore!</h2>
+                <b>Years</b>
+                <select id="toe_yearSelector" onchange="onToEYearChanged()">
+                    <option value="all-Years">All Years</option>
+                    <option value="2002" selected>2002</option>
+                    <option value="2003">2003</option>
+                    <option value="2004">2004</option>
+                    <option value="2005">2005</option>
+                    <option value="2006">2006</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- svg -->
+        <div class="fixed" id="visualization">
+            <svg id="viz" width="100%" height="100%"></svg>
+        </div>
+    </div>
+    <!-- /graphic -->
+</body>
+<!--
 <body>
     <div id="main"></div>
     <b>Years</b>
@@ -38,6 +138,10 @@
         <option value="2018">2018</option>
     </select>
 </body>
+-->
+<!-- <script src="./js/populationpyramid.js"></script> -->
+<script src="./js/sourceToTarget.js"></script>
+<script src="./js/typeOfExploit.js"></script>
 <script src="./js/main.js"></script>
 
 </html>
