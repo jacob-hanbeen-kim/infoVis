@@ -131,7 +131,8 @@ def refineInFile(inFile,outFile):
         .apply(lambda x: x.replace("Other;Not specified","Unknown"))\
         .apply(lambda x: x.replace("Domestic Work;Not specified","Unknown"))\
         .apply(lambda x: x.replace("Agriculture;Not specified","Agriculture"))\
-        .apply(lambda x: x.replace("Construction;Not specified","Construction"))\
+        .apply(lambda x: x.replace("Construction;Not specified","Construction"))
+        # .apply(lambda x: x.replace("Construction;Not specified","Construction"))
     
     final_df.to_csv(outFile,index=False)
 def summary(inFile):
@@ -145,7 +146,7 @@ def main():
     if not os.path.isfile(refineFile):
         refineInFile(inFile,refineFile)
     
-    summary(refineFile)
+    # summary(refineFile)
     
     
 if __name__ == "__main__":
