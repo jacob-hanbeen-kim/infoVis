@@ -1,6 +1,6 @@
 var margin = {top : 10, right: 30, bottom: 20, left:50};
-var width = 1100 -margin.left - margin.right;
-var height = 600 - margin.top - margin.bottom;
+var width = 1000 -margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
 var colors=["#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#8dd3c7","#ffffb3","#bebada"];
 var barWidth=100;
 
@@ -9,10 +9,9 @@ d3.csv("cleanData_refine.csv",dataProcessor).then(function(data){
     div=d3.select("body").append("div").attr("class",'barChart');
     svg =div //d3.select("body") //div
             .append("svg")
-            .attr("width",width/3+ margin.left + margin.right)
+            .attr("width",width/2+ margin.left + margin.right)
             .attr("height",height + margin.top + margin.bottom)
-            .attr("transform","translate("+[0,margin.top ]+")"); 
-            //.attr("transform","translate("+[margin.left,margin.top ]+")"); 
+            .attr("transform","translate("+[margin.left,margin.top ]+")"); 
 
     dataset=splitCell(data);
     exploit_nestData = nest_exploitType(data); //console.log(exploit_nestData);
@@ -36,9 +35,9 @@ function draw_exploitChart(year){
     var values = Object.values(exploit_nestData)
     var max_height = d3.max(values, function(d){return d.length;}); //console.log(max_height);
     var min_height = d3.min(values,function(d){return d.length;})
-    // var xScale = d3.scaleLinear()
-    //                .domain([0,selected_dataset.length])
-    //                .range([0,width-100]);
+    var xScale = d3.scaleLinear()
+                   .domain([0,selected_dataset.length])
+                   .range([0,width-100]);
     var yScale = d3.scaleLinear()
                    .domain([0,selected_dataset.length])
                    .range([0,height]);
@@ -61,6 +60,7 @@ function draw_exploitChart(year){
                        return colors[i];
                       })
                     .on("mouseover",mouseover)
+                    //   .on("mouseout",mouseout)
                   ;
     chart.merge(chartEnter);
     cumulative=0;
@@ -129,7 +129,6 @@ function draw_exploitChart(year){
 }
 function mouseover(){
     // console.log(exploit_nestData);
-    d3.select(".subChart").remove();
     var exploit_type = d3.select(this)._groups[0][0].id;
     // all_exploitCharts=d3.selectAll(".exploit_chart")._groups[0];
     // all_exploitCharts.forEach(function(each){
@@ -140,160 +139,63 @@ function mouseover(){
     if(exploit_type.includes("sexual") || exploit_type.includes("Sexual")) {
         var extract_dataset = exploit_nestData[exploit_type];
         var nested_extractData = nest_sexType(extract_dataset);
-        draw_subChart(nested_extractData);
     }
-    else if (exploit_type.includes("labour")){
+    if (exploit_type.includes("labour")){
         var extract_dataset = exploit_nestData[exploit_type];
         var nested_extractData = nest_labourType(extract_dataset);
-        draw_subChart(nested_extractData);
     }
-    // console.log(extract_dataset);
+    console.log(nested_extractData);
+    draw_subChart(nested_extractData);
 }
 function draw_subChart(dataset){
-    console.log(dataset); 
-    var height= 500;
-    var color = ['#c51b7d',"#fc9272",'#4d9221',"#3288bd",'#636363','#756bb1','#99d8c9',"#d73027",'#fa9fb5','#7fbc41'];
-
-    var max_width = d3.max(Object.values(dataset),function(d){return d.length;}); //console.log(max_width);
-    var xScale = d3.scaleLinear()
-                    .domain([0,max_width])//.domain([0,Math.round(max_width/25)*2])//
-                    .range([0,width]);//.range([0,width]);
+    color = d3.scaleSequential(d3.interpolateBlues)
+        .domain(Object.keys(dataset));
+        
     
+    var max_width = d3.max(Object.values(dataset),function(d){return d.length;});
+    var xScale = d3.scaleLinear()
+                   .domain([0,max_width])
+                    .range([0,width]);
     var yScale = d3.scaleBand()
                    .domain(Object.keys(dataset))
-                   .range([0,height])
-                   .padding(0.01);
-    // var band = Math.floor(yScale.bandwidth()); console.log(band);
-    //This is how I determined cell size
-    var groupSize =100;
-    var nRow=5;
-    var max_cell_num = Math.round(max_width/groupSize); //console.log(max_cell_num)
-    var max_col_num = Math.floor(max_cell_num/nRow)+1;//console.log(max_col_num);
-    
-    var new_data = divide_into_group(dataset,max_col_num,groupSize)[0]; //console.log(new_data);
-    var svg_subChart = d3.select("body").append("div").attr("class",'subChart')
-                    .append("svg").attr("width",width).attr("height",height)
-                    .attr("transform","translate(" + -margin.left+ ","+50+ ")");
-    
-    var g_label = svg_subChart.append("g")
-    				.attr("id","label")
-    				.attr("transform","translate(" + 0+ ","+12+ ")");
-    var labels=g_label .selectAll("text")
-			            .data(divide_into_group(dataset,max_col_num,groupSize)[1])
-			            .enter()
-			            .append("text")
-			            .style("text-anchor","start")
-			            // .attr("x",0)
-			            .attr("y",function(d){return d.height;})
-			            .text(function(d){
-			                return d.type ;})
-			            
-			            .style("fill",function(d){
-			                var index = Object.keys(dataset).indexOf(d.type);
-			                 return color[index];
-			            });
-			            
-    var g_rect = svg_subChart.append("g")
-                            .attr("id","sub_rect")
-                            .attr("transform","translate(" + 150+ ","+0+ ")");
-    var rects= g_rect.selectAll("rect")
-			            .data(new_data)                      
-			            .enter()
-			            .append("rect")
-			            .attr("x",function(d,i){
-			                return d.x ;
-			            })
-			            .attr("y",function(d){
-			                return d.y  ;})
-			            .attr("width",20)
-			            .attr("height",20)
-			            //.attr("class","subChart_rect")
-			            .attr("id",function(d){return d.type;})
-			           .style("fill",function(d){
-			                var index = Object.keys(dataset).indexOf(d.type);
-			                return color[index];
-			           });     
-    var g_legend = svg_subChart.append("g")
-                            .attr('id',"legend")
-                            .attr("transform","translate(" + 860+ ","+0+ ")");
-                            ;
-
-    var legends=g_legend.selectAll("rect")
-                       .data(Object.keys(dataset))
-                       .enter()
-                       .append("rect")
-                       .attr("width",20)
-                       .attr("height",20)
-                    //    .attr("x",width-20)
-                       .attr("y",function(d,i){
-                           return i*20+i*5;
-                       })
-                       .style("fill",function(d){
-                           console.log(d);
-                          var index = Object.keys(dataset).indexOf(d);
-                          return color[index];
-                       })
-                       ; 
-                       var g_legend = svg_subChart.append("g")
-                       .attr('id',"legend")
-                       //.attr("transform","translate(" + 650+ ","+0+ ")");
-                       ;
-    var g_legend_text= svg_subChart.append("g")
-                       .attr('id',"legend_text")
-                       .attr("transform","translate(" + 880+ ","+14+ ")");
-                       ;
-    var legend_texts=g_legend_text.selectAll("text")
-                  .data(Object.keys(dataset))
-                  .enter()
-                  .append("text")
-                  .style("text-anchor","start")
-                  .attr("y",function(d,i){
-                      return i*20+i*5;
-                  })
-                  .text(function(d){
-                      return groupSize + " person";
-                  })
-                  .style("fill",function(d){
-                     var index = Object.keys(dataset).indexOf(d);
-                     return color[index];
-                  })
-                  ;                                      
-}
-
-function divide_into_group(dataset,n_col, groupSize){
-    //bandSize is 123
-    var cellSize = 20;
-    var gapSize=5;
-    var big_dataset=[];
-    var y_gap= 10;
-    var cur_height =0;var next_height=0;
-    var row_info=[];
+                   .range([height,0])
+                   .padding(0.1);
+    var square_width = 100; //100 people is in 1 square
     Object.keys(dataset).forEach(function(each_type){
-        // console.log(each_type);
-        row_info.push({type:each_type,height:next_height});
         var total_count = dataset[each_type].length; //console.log(each_type, total_count);
-        var cur_dataset = [];
-        var total_cells= Math.floor(total_count/groupSize)+1; 
-        // // console.log(total_cells,groupSize);
-        // var n_col = Math.floor(total_cells/nRow)+1; //console.log(total_cells,n_col);
-        // var index = Object.keys(dataset).indexOf(each_type);  //console.log(index);
-        var n_row = Math.floor(total_cells/n_col)+1; //console.log(n_row)
-        
-        // var cur_y_pos = bandSize*(index);console.log(each_type,cur_y_pos);
-        for (var i =0; i<total_cells;i++){
-            var x = (i%n_col)*cellSize + (i%n_col)*gapSize;
-            var y = Math.floor(i/n_col)*cellSize +(Math.floor(i/n_col))*gapSize +next_height ; 
-            cur_dataset.push({type:each_type,x:x,y:y})
-        } 
-        cur_height = (cellSize+gapSize)*n_row ; //console.log(cur_height);
-        next_height = next_height+cur_height+y_gap;
-        big_dataset=big_dataset.concat(cur_dataset);
-    }) //end of forEach loop
-    // console.log(big_dataset);
-    // console.log(row_info);
-    return [big_dataset,row_info];
+        var cur_dataset = []
+        for (var i =1; i<=parseInt(total_count/square_width);i++){
+            cur_dataset.push(i*square_width)
+        } //console.log(cur_dataset);
+        var remain = total_count -parseInt(total_count/square_width)*square_width;
+        cur_dataset.push(remain);
+        // console.log(cur_dataset);
+        svg_subChart = d3.select("body").append("div").attr("class",'subChart')
+                    .append("svg")
+                    //.attr("class","sub_svg")
+                      .attr("width",width/2 + margin.left + margin.right)
+                      .attr("height",yScale(each_type) + margin.top + margin.bottom)
+                      .attr("transform","translate("+[margin.left,margin.top ]+")"); 
+        svg_subChart.selectAll("rect")
+                    .data(cur_dataset)
+                    .enter()
+                    .append("rect")
+                    .attr("id",each_type)
+                    .attr("x",function(d,i){
+                        // console.log(d);
+                        return xScale(i*square_width);
+                    })
+                    .attr("y",function(d){
+                        return yScale(each_type);
+                    })
+                    .attr("width",square_width)
+                    .attr("height",square_width)
+                    .style("fill",function(d){
+                        return color(each_type);
+                    })
+                    ;
+    })
 }
-
 function splitCell(data){
     var dataset = [];
     data.forEach(function(row){

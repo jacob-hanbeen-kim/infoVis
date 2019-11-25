@@ -10,93 +10,87 @@ svg =div.append("svg")
             .attr("width",width + margin.left + margin.right)
             .attr("height",height + margin.top + margin.bottom)
             .attr("transform","translate("+[margin.left,margin.top ]+")"); 
-var tooltip = d3.select("#barChart")
-                .append("div")
-                .style("position","absolute")
-                .style("visibility","hidden");
-                      
-d3.csv("exploitType_byYear.csv",function(data){
+
+d3.csv("cleanData_refine.csv",dataProcessor).then(function(data){
     // console.log(data);
-    var count_extent = d3.extent(data,function(d){return +d.count;});
-    update(2002);
-    function update(year){
-        var dataFilter=data.filter(function(d){
+    dataset=splitCell(data);
+    exploit_nestData = nest_exploitType(data); //console.log(exploit_nestData);
+    draw_exploitChart("2015");
+});
+function draw_exploitChart(year){
+    
+    if (year == "all-years"){
+        var exploit_nestData = nest_exploitType(dataset);
+    }
+    else{//select only row of that year
+        dataset=dataset.filter(function(d){
             return d.year == year;
         })
-        let cumulative=0;
-        var cur_total_count = d3.sum(dataFilter,function(d){return +d.count;});
-        // console.log(cur_total_count);
-        var xScale = d3.scaleLinear()
-                   .domain([0,cur_total_count])
-                   .range([0,width]);
-        dataFilter = dataFilter.map(function(d){
-            cumulative+=+d.count;
-            return {
-                year:d.year,
-                type:d.type,
-                count:+d.count,
-                cumulative:cumulative-(+d.count),
-                percent:(+d.count/cur_total_count)*100
-            }
-        })
-        // console.log(dataFilter);
-        var chart = svg.selectAll('rect')
-                  .data(dataFilter);
-        var chartEnter = chart.enter()
-                    .append("rect")
-                    .attr("y",height/2 - barHeight/2)
-                    .attr("x",function(d){
-                        return xScale(d.cumulative);
-                    })
-                    .attr("width",function(d){return xScale(d.count);})
-                    .attr("height",barHeight)
-                    .style("fill",function(d,i){
-                        return colors[i];});
-        chart.merge(chartEnter);
-        var exploit_label = svg.selectAll(".exploit_type")
-                         .data(dataFilter)
-                         .enter().append("text")
-                         .attr("class","exploit_type")
-                         .attr("text-anchor","middle")
-                         .attr("y",height/2 +(barHeight/2)*1.3)
-                         .attr("x",function(d){
-                            return xScale(d.cumulative) + xScale(d.count)/2;
-                         })
-                         .text(function(d){return d.type;})
-                         .style("fill",function(d,i){return colors[i];});    
-    
-        var count_label = svg.selectAll(".count_label")
-                            .data(dataFilter)
-                            .enter().append("text")
-                            .attr("class","count_label")
-                            .attr("text-anchor","middle")
-                            .attr("x",function(d){
-                                return xScale(d.cumulative) + xScale(d.count)/2;
-                            })
-                            .attr("y",height/2 +5)
-                            .text(function(d){return d.count;})
-                            .style("fill","#ffffff")
-                            ;
-        var percent_label = svg.selectAll(".percent_label") 
-                                .data(dataFilter)
-                                .enter().append("text")
-                                .attr("class","percent_label")
-                                .attr("text-anchor","middle")
-                                .attr("x",function(d){return xScale(d.cumulative)+xScale(d.count)/2;})
-                                .attr('y',height/2-barHeight/2*1.1)
-                                .text(function(d){
-                                    return d.percent.toFixed(2) +" %";});
+        var exploit_nestData = nest_exploitType(dataset);
     }
-    d3.select("#selectButton_year").on("change",function(d){
-        
-        var selectedOption =d3.select(this).property("value");
-        console.log(selectedOption);
-        d3.selectAll("rect").remove();
-        d3.selectAll(".percent_label").remove();
-        d3.selectAll(".count_label").remove();
-        d3.selectAll(".exploit_type").remove();
-        update(selectedOption);
+    console.log(exploit_nestData);
+    // (exploit_nestData["Sexual exploitation"].length);
+    var x = d3.scaleBand()
+              .range([0,width])
+              .domain(Object.keys(exploit_nestData))
+              .padding(0.2);
+    var values = Object.values(exploit_nestData)
+    var max_height = d3.max(values, function(d){return d.length;}); console.log(max_height);
+    var min_height = d3.min(values,function(d){return d.length;})
+    var y =d3.scaleLinear()
+             .domain([min_height,max_height])
+             .range([height,min_height]);
+    var chart = svg
+                    .selectAll("rect")
+                    .data(Object.keys(exploit_nestData))
+                    .enter()
+                    .append("rect")
+                    .attr("x",function(d,i){
+                        return i*x.bandwidth()})
+                    .attr("y",function(d){
+                        console.log(d);
+                        return height-y(exploit_nestData[d].length);
+                    })
+                    .attr("width",x.bandwidth())
+                    .attr("height",function(d){
+                        return y(exploit_nestData[d].length);
+                    })
+                    ;
+}
+// function count_total (an_object){
+//     var total =0;
+//     Object.keys(an_object).forEach(element => {
+//         console.log(element);
+//         total += an_object[element].length;
+//     });
+// }
+function splitCell(data){
+    var dataset = [];
+    data.forEach(function(row){
+        splits=row.exploit_type.split(";");
+        if (splits.length >1){
+            splits.forEach(function(s){
+                dataset.push({year:row.year,exploit_type:s,labour_type:row.labour_type,sex_type:row.sex_type});
+            })
+        }else{
+            dataset.push(row)
+        }    
     })
-
-});
-
+    return dataset;
+}
+function dataProcessor(d){
+    return {
+        year :+d["Year of Registration"],
+        exploit_type:d["Type Of Exploitation"],
+        labour_type:d['Type of Labour'],
+        sex_type:d['Type of Sex']
+    }
+}
+function nest_exploitType(data){
+    var nestedData = d3.nest()
+                       .key(function(d){
+                           return d.exploit_type;
+                       })
+                       .object(data);
+    return nestedData;
+}
