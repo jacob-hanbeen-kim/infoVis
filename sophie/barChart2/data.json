@@ -1,0 +1,192 @@
+[
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Unknown",
+    "count": 19131
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Not Specified",
+    "count": 10567
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Debt Bondage",
+    "count": 536
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Threats",
+    "count": 2409
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Psychological Abuse",
+    "count": 2767
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Physical Abuse",
+    "count": 2446
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Sexual Abuse",
+    "count": 1207
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Withholds Documnets",
+    "count": 336
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Takes Earnings",
+    "count": 1024
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "False Promises",
+    "count": 564
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Restricts Movement",
+    "count": 2651
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Restricts Medical Care",
+    "count": 108
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Withholds Necessities",
+    "count": 591
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Psychoactive Substances",
+    "count": 2070
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Excessive Working Hours",
+    "count": 58
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Threat of Law Enforcement",
+    "count": 118
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Usese Children",
+    "count": 152
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Other",
+    "count": 1823
+  },
+  {
+    "exploit_type": "sexual_exploitation",
+    "control_mean": "Restricts Financial Access",
+    "count": 128
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Unknown",
+    "count": 9968
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Not Specified",
+    "count": 4433
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Debt Bondage",
+    "count": 751
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Takes Earnings",
+    "count": 2049
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Threats",
+    "count": 1592
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Psychological Abuse",
+    "count": 1909
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Physical Abuse",
+    "count": 1052
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "False Promises",
+    "count": 2103
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Restricts Movement",
+    "count": 1754
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Restricts Medical Care",
+    "count": 948
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Excessive Working Hours",
+    "count": 1941
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Threat of Law Enforcement",
+    "count": 843
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Withholds Necessities",
+    "count": 912
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Withholds Documnets",
+    "count": 1626
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Psychoactive Substances",
+    "count": 43
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Sexual Abuse",
+    "count": 46
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Other",
+    "count": 286
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Restricts Financial Access",
+    "count": 44
+  },
+  {
+    "exploit_type": "labour_exploitation",
+    "control_mean": "Usese Children",
+    "count": 8
+  }
+]
