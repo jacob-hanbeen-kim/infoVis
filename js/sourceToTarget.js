@@ -7,6 +7,10 @@ countries =
         'SN', 'SV', 'SY', 'TH', 'TJ', 'TM', 'TR', 'TT', 'TW', 'UA', 'UG', 'Unknown',
         'US', 'UZ', 'VN', 'Y1', 'ZA', 'ZZ']
 
+
+function clearSourceToTarget() {
+    svg.selectAll('*').remove();
+}
 function updateSourceToTarget(year, removeAll = false) {
     if (removeAll) {
         svg.selectAll('*').remove();
@@ -52,7 +56,7 @@ function updateSourceToTarget(year, removeAll = false) {
         .attr("cx", 0)
         .attr("cy", 0)
         //.attr("r", function (d) { return 5; })
-        .style("fill", "rgb(255,0,0)")
+        .style("fill", "#CF6766")
         .attr("stroke", "white");
 
     targetCircle.merge(targetCircleEnter)
@@ -74,7 +78,7 @@ function updateSourceToTarget(year, removeAll = false) {
         .attr("cx", 0)
         .attr("cy", 0)
         //.attr("r", function (d) { return 5; })
-        .style("fill", "rgb(0,0,255)")
+        .style("fill", "#328CC1")
         .attr("stroke", "white");
 
     sourceCircle.merge(sourceCircleEnter)
@@ -97,7 +101,8 @@ function updateSourceToTarget(year, removeAll = false) {
         .attr('y', 0)
         .text(function (d) { return (d) })
         .style('text-anchor', 'end')
-        .style('font-size', 6);
+        .style('font-size', 6)
+        .style('fill', '#eee');
 
     labels.merge(labelsEnter)
         .attr('transform', function (d) {
@@ -113,7 +118,7 @@ function updateSourceToTarget(year, removeAll = false) {
         .append('path')
         .attr('class', 'links')
         .style('fill', 'none')
-        .attr('stroke', 'grey')
+        .attr('stroke', '#eee')
         .style('stroke-width', 1)
 
     links.merge(linksEnter)
@@ -154,7 +159,7 @@ function updateSourceToTarget(year, removeAll = false) {
 
             // Highlight the connections
             linksEnter
-                .style('stroke', function (link_d) { return link_d['Citizenship'] === d ? '#0000FF' : 'grey'; })
+                .style('stroke', function (link_d) { return link_d['Citizenship'] === d ? '#328CC1' : '#eee'; })
                 //.style('sroke-opacity', function (link_d) { return link_d['Citizenship'] === d || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 1 : .2; })
                 .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d ? 4 : 1; })
 
@@ -166,7 +171,7 @@ function updateSourceToTarget(year, removeAll = false) {
             sourceCircleEnter.style('opacity', 1)
             targetCircleEnter.style('opacity', 1)
             linksEnter
-                .style('stroke', 'grey')
+                .style('stroke', '#eee')
                 //.style('stroke-opacity', .8)
                 .style('stroke-width', 1)
             labelsEnter

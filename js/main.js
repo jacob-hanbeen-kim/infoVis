@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
 width = getDivWidth('visualization') - 30;
-height = 500;
+height = 700;
 // svg
 svg = d3.select("svg");
 
@@ -39,49 +39,54 @@ d3.csv('cleanData.csv', dataPreprocessor).then(function (data) {
         .domain([0, 1300])
         .range([5, 10]);
 
-    updateSourceToTarget('2002');
+    //updateSourceToTarget('2002');
+    var offset = '30%';
+    var offset2 = '40%';
+    fadeIn('story1', offset);
+    fadeIn('story2', offset);
+    fadeIn('story3', offset);
+    fadeIn('story4', offset);
 
-    scroll('div4', '10%', '2005', '2002');
-    scroll('div6', '10%', '2007', '2005');
-    scroll('div7', '10%', '2002', '2007');
-    scroll2('div8', '10%', '2009', '2002');
-    scroll3('div9', '10%', '2002', '2009');
+    scroll('content1', offset2, updateSourceToTarget, clearSourceToTarget, ['2002'], []);
+    scroll('content2', offset2, updateSourceToTarget, updateSourceToTarget, ['2005'], ['2002']);
+    scroll('content3', offset2, updateSourceToTarget, updateSourceToTarget, ['2007'], ['2005']);
+    scroll('content4', offset2, updateSourceToTarget, updateSourceToTarget, ['2002'], ['2007']);
+    scroll('content5', offset2, updateTypoeOfExploit, updateSourceToTarget, ['2009', true], ['2002', true]);
+    scroll('content6', offset2, updateTypoeOfExploit, updateTypoeOfExploit, ['2002'], ['2009']);
 });
 
 function getDivWidth(id) {
     return document.getElementById(id).offsetWidth;
 }
 
+function fadeIn(n, offset) {
+    return new Waypoint({
+        element: document.getElementById(n),
+        handler: function (direction) {
+            if (direction == 'down') {
+                $(this.element).fadeTo(800, 1);
+            } else {
+                $(this.element).fadeTo(800, 0);
+            }
+        },
+        offset: offset
+    })
+}
 //waypoints scroll constructor
-function scroll(n, offset, func1, func2) {
-    return new Waypoint({
-        element: document.getElementById(n),
-        handler: function (direction) {
-            direction == 'down' ? updateSourceToTarget(func1) : updateSourceToTarget(func2);
-        },
-        // start 75% from the top of the div
-        offset: offset
-    })
-}
 
-function scroll2(n, offset, func1, func2) {
+function scroll(n, offset, func1, func2, param1, param2) {
+    fadeIn(n, offset);
     return new Waypoint({
         element: document.getElementById(n),
         handler: function (direction) {
-            direction == 'down' ? updateTypoeOfExploit(func1, true) : updateSourceToTarget(func2, true);
+            if (param2.length == 0) {
+                direction == 'down' ? func1(param1[0], param1[1]) : func2();
+            } else if (param1.length == 1) {
+                direction == 'down' ? func1(param1[0]) : func2(param2[0]);
+            } else {
+                direction == 'down' ? func1(param1[0], param1[1]) : func2(param2[0], param2[1]);
+            }
         },
-        // start 75% from the top of the div
-        offset: offset
-    })
-}
-
-function scroll3(n, offset, func1, func2) {
-    return new Waypoint({
-        element: document.getElementById(n),
-        handler: function (direction) {
-            direction == 'down' ? updateTypoeOfExploit(func1) : updateTypoeOfExploit(func2);
-        },
-        // start 75% from the top of the div
         offset: offset
     })
 }

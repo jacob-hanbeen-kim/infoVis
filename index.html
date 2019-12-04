@@ -5,11 +5,17 @@
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
+<!--jQuery-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
 <!--waypoint-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.js"></script>
 
 <!-- Load color palette -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+<!--background music-->
+<audio src="../resources/backgroundMusic.wav" autoplay="true" loop="true" hidden="true"></audio>
 
 <head>
     <meta charset="UTF-8">
@@ -18,37 +24,72 @@
 </head>
 
 <body>
-    <div id="graphic">
-        <div id="title">
-            <h2>
-                <pre>
-                <strong>Human Trafficking</strong>
-                use of force, fraud, or coercion to obtain some type of labor or commercial sex act.
-                </pre>
-            </h2>
-        </div>
-        <div class="container">
+    <div id="title">
+        <h1>HUMAN TRAFFICKING</h1>
+    </div>
 
-            <div id="div2">
+    <div class="story" id="story1">
+        <blockquote cite="https://polarisproject.org/stories?keys=&field_categories_tid=43753&field_initiatives_tid=All&field_blog_author_target_id=All">
+            <p>
+                Irene applied for a job through an international recruitment agency that connected household workers with families in the
+                U.S. She accepted a job with a California couple who promised they would pay her $1,500 a month and sponsor
+                her temporary work visa. Upon her arrival, they forbade Irene from ever leaving the home, always arming the
+                security system to keep her confined. For 18 hours a day, Irene cooked, cleaned, and cared for the children,
+                but was never paid.
+            </p>
+        </blockquote>
+    </div>
+    <div class="story" id="story2">
+        <blockquote cite="https://polarisproject.org/stories?keys=&field_categories_tid=43753&field_initiatives_tid=All&field_blog_author_target_id=All">
+            <p>
+                Jasmine was 18 years old when she ran away from her home in Missouri with her 19-year-old boyfriend Steven. 'Now that we’re
+                going to live together, you’ll need to earn some money,' Steven told her. And then he drove her to a truck
+                stop on a local interstate. Every night, Jasmine was taken to a different truck stop and forced to go door
+                to door offering commercial sex.
+            </p>
+        </blockquote>
+    </div>
+    <div class="story" id="story3">
+        <blockquote cite="https://polarisproject.org/stories?keys=&field_categories_tid=43753&field_initiatives_tid=All&field_blog_author_target_id=All">
+            <p>
+                Fifteen-year-old Marisol had been living in Texas for eight months, working as a waitress and forced to sell sex at a cantina.
+                She had come from Mexico, promised a job that would earn her enough money to support her family back home.
+                She was smuggled across the border by an organized network and housed in a cramped apartment with ten other
+                girls and women.
+            </p>
+        </blockquote>
+    </div>
+    <div class="story" id="story4">
+        <blockquote cite="https://polarisproject.org/stories?keys=&field_categories_tid=43753&field_initiatives_tid=All&field_blog_author_target_id=All">
+            <p>
+                The gangs that ruled the streets of El Salvador had been threatening Fernando to join them. When he continued to resist them,
+                they went after his family, killing them. 'You have no choice now,' they told him.
+            </p>
+        </blockquote>
+    </div>
+
+    <div id="graphic">
+        <div class="container">
+            <div class="content" id="content1">
                 <h2>In 2002, most popular human trafficking source was
                     <strong>RO</strong>.
                 </h2>
                 <p></p>
             </div>
-            <div id="div4">
+            <div class="content" id="content2">
                 <h2>
                     In 2005,
                     <strong>RO</strong> decrease and
                     <strong>UA</strong> emerged as a new strong source of human trafficking.
                 </h2>
             </div>
-            <div id="div6">
+            <div class="content" id="content3">
                 <h2>In 2007,
                     <strong>UA</strong> still remains most popular source, and
                     <strong>SN</strong> becamse one of most popular target for human trafficking.
                 </h2>
             </div>
-            <div id="div7">
+            <div class="content" id="content4">
                 <h2>Explore!</h2>
                 <b>Years</b>
                 <select id="stt_yearSelector" onchange="onYearChanged()">
@@ -72,14 +113,14 @@
                     <option value="2018">2018</option>
                 </select>
             </div>
-            <div id="div8">
+            <div class="content" id="content5">
                 <h2>In 2009,
                     <strong>sexual exploitation</strong> was mor popular than
                     <strong>forced labour</strong>. However, majority of the exploitation was found to be for
                     <strong>unknown</strong> reason.
                 </h2>
             </div>
-            <div id="div9">
+            <div class="content" id="content6">
                 <h2>Explore!</h2>
                 <b>Years</b>
                 <select id="toe_yearSelector" onchange="onToEYearChanged()">
