@@ -5,6 +5,7 @@
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
+
 <!--jQuery-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
@@ -67,14 +68,138 @@
             </p>
         </blockquote>
     </div>
+    <div class="story" id="story5">
+        <h2 class="narrative">
+            Over the course of 2002 to 2018,
+            <span style="color: #CF6766">over xxxx</span>
+            number of people were reported as a victim of human trafficking.
+        </h2>
+    </div>
+    <div class="story" id="story6">
+        <h2 class="narrative">
+            Human trafficking is a
+            <span style="color: #CF6766">modern-day slavery</span>
+            in which victims are exploited through the use of violence, deception, or coersion for the purpose of sex, organ removal,
+            forced marriage, military, or involuntary labor.
+        </h2>
+    </div>
+    <div class="story" id="story7">
+        <h2 class="narrative">
+            Victims of human trafficking ranges from young children to grown up men and women, U.S. citizens to any lawful permanent
+            residents of foreign nations, educated to non-educated, and anyone who lives in urban, suburban, and rural areas.
+            In other words,
+            <span style="color: #CF6766">ANYONE</span>
+            can become a victims of human trafficking.
+        </h2>
+        <div>
+            <h3>
+                <span style="color: #CF6766">51%</span> of identified victims of trafficking are women,</h3>
+            <h3>
+                <span style="color: #CF6766">28%</span> children and</h3>
+            <h3>
+                <span style="color: #CF6766">21%</span> men </h3>
+        </div>
+        <div>
+            <h3>
+                <span style="color: #CF6766">72%</span> people exploited in the sex industry are women </h3>
+        </div>
+        <div>
+            <h3>
+                <span style="color: #CF6766">63%</span> of identified traffickers were men and</h3>
+            <h3>
+                <span style="color: #CF6766">37%</span> women </h3>
+        </div>
+        <div>
+            <h3>
+                <span style="color: #CF6766">43%</span> of victims are trafficked domestically within national borders </h3>
+        </div>
+    </div>
+
 
     <div id="graphic">
         <div class="container">
+            <div class="fullWidth" id="meansOfControl1">
+                <h2>Human trafficking involves recruitment, harbouring or transporting people into a situation of exploitation
+                    through the use of violence, deception or coercion.
+                </h2>
+            </div>
+            <div class="fullWidth" id="meansOfControl2">
+                <h2>Traffickers use various means of control to exploit the victims. Some of these includes: Psychological Abuse,
+                    Threats, False Promises, Debt Bondages, Use of Children, and more. Traffickers utilize specific means
+                    of control that is most suitable for the targeted victims. We observed how type of exploitation changes
+                    the means of control, and saw a clear differences.
+                </h2>
+            </div>
+            <div class="content" id="meansOfControl3">
+                <h2>The most popular means of control for
+                    <span style="color: #69b3a2">Sexual Exploitation</span> was
+                    <span style="color: #CF6766">"Psychological Abuse"</span>. Followed by Restricts Movement, Physical Abuse, and Threats.
+                </h2>
+            </div>
+            <div class="content" id="meansOfControl4">
+                <h2>As you can see in the bar chart, victims of sexual exploitation are mostly recruited through use of violence.
+                    They are abused psychologically and physically, and were forced to provide commercial sex.
+                </h2>
+            </div>
+            <div class="content" id="meansOfControl5">
+                <h2>Sex trafficking has devastating consequences for the trafficked individual. Victims may suffer from long-lasting
+                    physical and psychological trauma, disease (HIV/AIDS), drug addiction, malnutrition and social ostracism.
+                </h2>
+            </div>
+            <div class="content" id="meansOfControl6">
+                <h2>On the other hand, most popular means of control for
+                    <span style="color: #69b3a2">Labour Exploitation</span> was
+                    <span style="color: #CF6766">"False Promises"</span>. Followed by Takes Earnings, Excessive Working Hours, and Psychological Abuse.
+                </h2>
+            </div>
+            <div class="content" id="meansOfControl7">
+                <h2>Unlike the sexual exploitation, victims of labour exploitation is mostly recruited by deception or coercion.
+                </h2>
+            </div>
+            <div class="content" id="meansOfControl8">
+                <h2>Most victims of the labour explitation are promised a job and an income, but ends up getting locked up and
+                    forced to work.
+                </h2>
+            </div>
+            <div class="fullWidth" id="typeOfExploitation1">
+                <h2>People can be trafficked for many different forms of exploitation such as forced prostitution, forced labour,
+                    forced begging, forced criminality, domestic servitude, forced marraige, and forced organ removal.
+                </h2>
+            </div>
+            <div class="content" id="typeOfExploitation2">
+                <h2>Initially, all known type of exploit in
+                    <strong>2002</strong> was
+                    <span style="color: #CF6766">sexual explitation</span>.
+                </h2>
+            </div>
+            <div class="content" id="typeOfExploitation">
+                <h2>Explore!</h2>
+                <b>Years</b>
+                <select id="toe_yearSelector" onchange="onToEYearChanged()">
+                    <option value="all-Years">All Years</option>
+                    <option value="2002" selected>2002</option>
+                    <option value="2003">2003</option>
+                    <option value="2004">2004</option>
+                    <option value="2005">2005</option>
+                    <option value="2006">2006</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                </select>
+            </div>
             <div class="content" id="content1">
                 <h2>In 2002, most popular human trafficking source was
                     <strong>RO</strong>.
                 </h2>
-                <p></p>
             </div>
             <div class="content" id="content2">
                 <h2>
@@ -120,30 +245,6 @@
                     <strong>unknown</strong> reason.
                 </h2>
             </div>
-            <div class="content" id="content6">
-                <h2>Explore!</h2>
-                <b>Years</b>
-                <select id="toe_yearSelector" onchange="onToEYearChanged()">
-                    <option value="all-Years">All Years</option>
-                    <option value="2002" selected>2002</option>
-                    <option value="2003">2003</option>
-                    <option value="2004">2004</option>
-                    <option value="2005">2005</option>
-                    <option value="2006">2006</option>
-                    <option value="2007">2007</option>
-                    <option value="2008">2008</option>
-                    <option value="2009">2009</option>
-                    <option value="2010">2010</option>
-                    <option value="2011">2011</option>
-                    <option value="2012">2012</option>
-                    <option value="2013">2013</option>
-                    <option value="2014">2014</option>
-                    <option value="2015">2015</option>
-                    <option value="2016">2016</option>
-                    <option value="2017">2017</option>
-                    <option value="2018">2018</option>
-                </select>
-            </div>
 
         </div>
 
@@ -154,35 +255,11 @@
     </div>
     <!-- /graphic -->
 </body>
-<!--
-<body>
-    <div id="main"></div>
-    <b>Years</b>
-    <select id="yearSelector" onchange="onYearChanged()">
-        <option value="allYears">All Years</option>
-        <option value="2002">2002</option>
-        <option value="2003">2003</option>
-        <option value="2004">2004</option>
-        <option value="2005">2005</option>
-        <option value="2006">2006</option>
-        <option value="2007">2007</option>
-        <option value="2008">2008</option>
-        <option value="2009">2009</option>
-        <option value="2010">2010</option>
-        <option value="2011">2011</option>
-        <option value="2012">2012</option>
-        <option value="2013">2013</option>
-        <option value="2014">2014</option>
-        <option value="2015">2015</option>
-        <option value="2016">2016</option>
-        <option value="2017">2017</option>
-        <option value="2018">2018</option>
-    </select>
-</body>
--->
+
 <!-- <script src="./js/populationpyramid.js"></script> -->
 <script src="./js/sourceToTarget.js"></script>
 <script src="./js/typeOfExploit.js"></script>
+<script src="./js/meansOfControl.js"></script>
 <script src="./js/main.js"></script>
 
 </html>

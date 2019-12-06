@@ -8,9 +8,6 @@ countries =
         'US', 'UZ', 'VN', 'Y1', 'ZA', 'ZZ']
 
 
-function clearSourceToTarget() {
-    svg.selectAll('*').remove();
-}
 function updateSourceToTarget(year, removeAll = false) {
     if (removeAll) {
         svg.selectAll('*').remove();
@@ -24,6 +21,19 @@ function updateSourceToTarget(year, removeAll = false) {
             return d['Year of Registration'] == year;
         }
     });
+
+    // A linear scale to position the nodes on the X axis
+    var x = d3.scalePoint()
+        .domain(countries)
+        .range([margin.left, width - margin.right]);
+
+    var size = d3.scaleLinear()
+        .domain([0, 1300])
+        .range([10, 30]);
+
+    var fontSize = d3.scaleLinear()
+        .domain([900, 2000])
+        .range([8, 18]);
 
     var source = {};
     for (var i = 0; i < filteredData.length; i++) {
@@ -101,12 +111,13 @@ function updateSourceToTarget(year, removeAll = false) {
         .attr('y', 0)
         .text(function (d) { return (d) })
         .style('text-anchor', 'end')
-        .style('font-size', 6)
+        .style('text-align', 'center')
+        .style('font-size', fontSize(width))
         .style('fill', '#eee');
 
     labels.merge(labelsEnter)
         .attr('transform', function (d) {
-            return ('translate(' + x(d) + ',' + (height - 15) + ')rotate(-45)')
+            return ('translate(' + [x(d), (height - 15)] + ')rotate(-45)')
         });
 
     // Add the links
@@ -164,7 +175,7 @@ function updateSourceToTarget(year, removeAll = false) {
                 .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d ? 4 : 1; })
 
             labelsEnter
-                .style('font-size', function (label_d) { var set = destToSrc[label_d]; return label_d === d || (set ? set.has(d) : false) ? 16 : 2 })
+                .style('font-size', function (label_d) { var set = destToSrc[label_d]; return label_d === d || (set ? set.has(d) : false) ? fontSize(width) * 2 : fontSize(width) / 2 })
                 .attr('y', function (label_d) { return label_d === d ? 10 : 0 })
         })
         .on('mouseout', function (d) {
@@ -175,7 +186,7 @@ function updateSourceToTarget(year, removeAll = false) {
                 //.style('stroke-opacity', .8)
                 .style('stroke-width', 1)
             labelsEnter
-                .style('font-size', 6)
+                .style('font-size', fontSize(width))
                 .attr('y', 0)
         })
 
