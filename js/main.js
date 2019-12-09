@@ -69,15 +69,16 @@ Promise.all([
     fadeIn('meansOfControl7', '60%');
     fadeIn('meansOfControl8', '60%');
     scroll('typeOfExploitation1', '60%', clearSourceToTarget, updateMeansOfControl, [], ['labour_exploitation', true]);
-    scroll('typeOfExploitation2', offset2, updateTypoeOfExploit, clearSourceToTarget, ['2002'], []);
-    scroll('typeOfExploitation3', offset2, updateTypoeOfExploit, clearSourceToTarget, ['2002', true], []);
-    scroll('typeOfExploitation', offset2, updateTypoeOfExploit, clearSourceToTarget, ['2002'], []);
+    scroll('typeOfExploitation2', offset2, updateTypoeOfExploit2, clearSourceToTarget, [], [], '20%');
+    fadeIn('typeOfExploitation3', '20%');
+    fadeIn('typeOfExploitation4', '20%');
+    fadeIn('typeOfExploitation5', '20%');
+    scroll('typeOfExploitation6', offset2, updateTypoeOfExploit, updateTypoeOfExploit2, ['2016', true], []);
     scroll('content1', offset2, updateSourceToTarget, updateMeansOfControl, ['2002', true], ['labour_exploitation', true]);
     scroll('content2', offset2, updateSourceToTarget, updateSourceToTarget, ['2005'], ['2002']);
     scroll('content3', offset2, updateSourceToTarget, updateSourceToTarget, ['2007'], ['2005']);
     scroll('content4', offset2, updateSourceToTarget, updateSourceToTarget, ['2002'], ['2007']);
     scroll('content5', offset2, updateTypoeOfExploit, updateSourceToTarget, ['2009', true], ['2002', true]);
-    scroll('content6', offset2, updateTypoeOfExploit, updateTypoeOfExploit, ['2002'], ['2009']);
 });
 
 function getDivWidth(id) {
@@ -108,8 +109,12 @@ function fadeIn(n, offset) {
 }
 
 // waypoints scroll constructor
-function scroll(n, offset, func1, func2, param1, param2) {
-    fadeIn(n, offset);
+function scroll(n, offset, func1, func2, param1, param2, offset2 = "") {
+    if (offset2 != "") {
+        fadeIn(n, offset2);
+    } else {
+        fadeIn(n, offset);
+    }
     return new Waypoint({
         element: document.getElementById(n),
         handler: function (direction) {
