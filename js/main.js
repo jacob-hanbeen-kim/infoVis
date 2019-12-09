@@ -73,12 +73,16 @@ Promise.all([
     fadeIn('typeOfExploitation3', '20%');
     fadeIn('typeOfExploitation4', '20%');
     fadeIn('typeOfExploitation5', '20%');
-    scroll('typeOfExploitation6', offset2, updateTypoeOfExploit, updateTypoeOfExploit2, ['2016', true], []);
-    scroll('content1', offset2, updateSourceToTarget, updateMeansOfControl, ['2002', true], ['labour_exploitation', true]);
-    scroll('content2', offset2, updateSourceToTarget, updateSourceToTarget, ['2005'], ['2002']);
-    scroll('content3', offset2, updateSourceToTarget, updateSourceToTarget, ['2007'], ['2005']);
-    scroll('content4', offset2, updateSourceToTarget, updateSourceToTarget, ['2002'], ['2007']);
-    scroll('content5', offset2, updateTypoeOfExploit, updateSourceToTarget, ['2009', true], ['2002', true]);
+    // scroll('typeOfExploitation6', offset2, updateTypoeOfExploit, updateTypoeOfExploit2, ['2016', true], []);
+    scroll('sourceToTarget1', '60%', clearSourceToTarget, updateTypoeOfExploit2, [], []);
+    fadeIn('sourceToTarget2', '60%');
+    //scroll('sourceToTarget3', offset2, updateSourceToTarget, clearSourceToTarget, ['allYears', false, false], []);
+    scroll('sourceToTarget3', offset2, loadSrcToDstAll, clearSourceToTarget, [], []);
+    scroll('sourceToTarget4', offset2, updateSourceToTarget, loadSrcToDstAll, ['2002', true, true, true], []);
+    scroll('sourceToTarget5', offset2, updateSourceToTarget, updateSourceToTarget, ['2016', true, true, true], ['2002', true, true, true], '60%');
+    scroll('sourceToTarget6', offset2, updateSourceToTarget, updateSourceToTarget, ['2002', true], ['2016', true, true, true], '60%');
+
+    scroll('final', offset2, clearSourceToTarget, updateSourceToTarget, [], ['2002', true]);
 });
 
 function getDivWidth(id) {
@@ -118,7 +122,7 @@ function scroll(n, offset, func1, func2, param1, param2, offset2 = "") {
     return new Waypoint({
         element: document.getElementById(n),
         handler: function (direction) {
-            direction == 'down' ? func1(param1[0], param1[1]) : func2(param2[0], param2[1]);
+            direction == 'down' ? func1(param1[0], param1[1], param1[2], param1[3]) : func2(param2[0], param2[1], param2[2], param2[3]);
             // if (param1.length == 1 && param2.length == 0) {
             //     direction == 'down' ? func1(param1[0]) : func2();
             // } else if (param1.length == 2 && param2.length == 0) {

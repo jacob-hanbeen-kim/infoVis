@@ -169,3 +169,15 @@ circle {
 rect {
   fill-opacity: .8;
 }
+
+button {
+  background-color: #328CC1;
+  border: none;
+  color: #eee;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}

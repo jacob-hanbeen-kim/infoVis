@@ -8,7 +8,7 @@ countries =
         'US', 'UZ', 'VN', 'Y1', 'ZA', 'ZZ']
 
 
-function updateSourceToTarget(year, removeAll = false) {
+function updateSourceToTarget(year, removeAll = false, enableMouseover = true, highLightMaxSrc = false) {
     if (removeAll) {
         svg.selectAll('*').remove();
     }
@@ -43,7 +43,10 @@ function updateSourceToTarget(year, removeAll = false) {
         } else {
             source[c] = 1;
         }
+
     }
+
+    var sourceMaxIdx = Object.keys(source).reduce(function (a, b) { return source[a] > source[b] ? a : b });
 
     var target = {};
     for (var i = 0; i < filteredData.length; i++) {
@@ -155,40 +158,63 @@ function updateSourceToTarget(year, removeAll = false) {
                 (start - end) / 2, 0, 0, ',',
                 start < end ? 1 : 0, end, ',', height - 30]
                 .join(' ')
-        })
+        });
 
-    sourceCircleEnter
-        .on('mouseover', function (d) {
-            // Highlight the nodes: every node is green except of him
-            sourceCircleEnter
-                .style('opacity', .2)
-            d3.select(this)
-                .style('opacity', 1)
+    if (enableMouseover) {
+        sourceCircleEnter
+            .on('mouseover', function (d) {
+                // Highlight the nodes: every node is green except of him
+                sourceCircleEnter
+                    .style('opacity', .2)
+                d3.select(this)
+                    .style('opacity', 1)
 
-            targetCircleEnter
-                .style('opacity', function (circle_d) { var set = destToSrc[circle_d]; return set ? (set.has(d) ? 1 : .2) : .2; })
+                targetCircleEnter
+                    .style('opacity', function (circle_d) { var set = destToSrc[circle_d]; return set ? (set.has(d) ? 1 : .2) : .2; })
 
-            // Highlight the connections
-            linksEnter
-                .style('stroke', function (link_d) { return link_d['Citizenship'] === d ? '#328CC1' : '#eee'; })
-                //.style('sroke-opacity', function (link_d) { return link_d['Citizenship'] === d || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 1 : .2; })
-                .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d ? 4 : 1; })
+                // Highlight the connections
+                linksEnter
+                    .style('stroke', function (link_d) { return link_d['Citizenship'] === d ? '#328CC1' : '#eee'; })
+                    //.style('sroke-opacity', function (link_d) { return link_d['Citizenship'] === d || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 1 : .2; })
+                    .style('stroke-width', function (link_d) { return link_d['Citizenship'] === d ? 4 : 1; })
 
-            labelsEnter
-                .style('font-size', function (label_d) { var set = destToSrc[label_d]; return label_d === d || (set ? set.has(d) : false) ? fontSize(width) * 2 : fontSize(width) / 2 })
-                .attr('y', function (label_d) { return label_d === d ? 10 : 0 })
-        })
-        .on('mouseout', function (d) {
-            sourceCircleEnter.style('opacity', 1)
-            targetCircleEnter.style('opacity', 1)
-            linksEnter
-                .style('stroke', '#eee')
-                //.style('stroke-opacity', .8)
-                .style('stroke-width', 1)
-            labelsEnter
-                .style('font-size', fontSize(width))
-                .attr('y', 0)
-        })
+                labelsEnter
+                    .style('font-size', function (label_d) { var set = destToSrc[label_d]; return label_d === d || (set ? set.has(d) : false) ? fontSize(width) * 2 : fontSize(width) / 2 })
+                    .attr('y', function (label_d) { return label_d === d ? 10 : 0 })
+            })
+            .on('mouseout', function (d) {
+                sourceCircleEnter.style('opacity', 1)
+                targetCircleEnter.style('opacity', 1)
+                linksEnter
+                    .style('stroke', '#eee')
+                    //.style('stroke-opacity', .8)
+                    .style('stroke-width', 1)
+                labelsEnter
+                    .style('font-size', fontSize(width))
+                    .attr('y', 0)
+            })
+    }
+
+    if (!enableMouseover || highLightMaxSrc) {
+        sourceCircleEnter
+            .style('opacity', function (circle_d) {
+                return circle_d == sourceMaxIdx ? 1 : .2;
+            });
+
+        targetCircleEnter
+            .style('opacity', function (circle_d) { var set = destToSrc[circle_d]; return set ? (set.has(sourceMaxIdx) ? 1 : .2) : .2; })
+
+        // Highlight the connections
+        linksEnter
+            .style('stroke', function (link_d) { return link_d['Citizenship'] === sourceMaxIdx ? '#328CC1' : '#eee'; })
+            //.style('sroke-opacity', function (link_d) { return link_d['Citizenship'] === d || link_d['Country_of_Exploitation'] === d['Country_of_Exploitation'] ? 1 : .2; })
+            .style('stroke-width', function (link_d) { return link_d['Citizenship'] === sourceMaxIdx ? 4 : 1; })
+
+        labelsEnter
+            .style('font-size', function (label_d) { var set = destToSrc[label_d]; return label_d === sourceMaxIdx || (set ? set.has(sourceMaxIdx) : false) ? fontSize(width) * 2 : fontSize(width) / 2 })
+            .attr('y', function (label_d) { return label_d === sourceMaxIdx ? 10 : 0 })
+
+    }
 
     targetCircle.exit().remove();
     sourceCircle.exit().remove();
@@ -201,4 +227,12 @@ function onYearChanged() {
     var select = d3.select('#stt_yearSelector').property('value');
 
     updateSourceToTarget(select);
+}
+
+function loadSrcToDstAll() {
+    svg.selectAll('*').remove();
+    svg.append('image')
+        .attr('xlink:href', '../srcTodstAll.png')
+        .attr('width', '50%')
+        .attr('height', '100%');
 }
