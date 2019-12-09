@@ -1,27 +1,21 @@
 
 
-// var margin = {top:0, right:40, bottom: 50, left: 60},
-//             width = 500 - margin.left - margin.right,
-//             height = 500 - margin.top - margin.bottom;
+// var margin = { top: 0, right: 40, bottom: 50, left: 60 },
+//   width = 500 - margin.left - margin.right,
+//   height = 500 - margin.top - margin.bottom;
 
-var width = 500;
-var height = 500;
-
-state = { year: 2002, gender: 2 };
+state = { year: '2002', gender: 2 };
 
 
-// var svg = d3.select('#main')
-//   .append("svg")
-//   .attr('width', width + margin.left + margin.right)
-//   .attr('height', height + margin.top + margin.bottom)
-//   .append("g")
-//   .attr("transform",
-//     "translate(" + margin.left + "," + margin.top + ")");
-var svg = d3.select("svg");
 
-d3.json('./years6.json').then(years => {
+function updateGenderAge() {
 
-  var ageDomain = unique(years.map(row => row.age));
+  svg.selectAll('*').remove();
+  margin = { top: 150, right: 200, bottom: 40, left: 50 }
+  w = width - margin.left - margin.right;
+  h = height - margin.top - margin.bottom;
+
+  var ageDomain = unique(genderAgeData.map(row => row.age));
   //var age = ["0--8", "9--17", "18--20", "21--23", "24--26", "27--29", "30--38", "39--47", "48+"]
 
   var getRange = d => {
@@ -38,77 +32,94 @@ d3.json('./years6.json').then(years => {
       }
   }
 
+  var peopleDomain = [0, d3.max(genderAgeData, row => row.population)];
 
-  var xScale = d3.scaleBand().rangeRound([0, width])
+  xScale = d3.scaleBand().rangeRound([0, w])
     .padding(0.1)
     .domain(ageDomain);
 
+  yScale = d3.scaleLinear()
+    .domain(peopleDomain)
+    .range([h, 0]);
 
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
+  chartG = svg.append("g")
+    .attr("transform", "translate(" + [margin.left, margin.top] + ")");
+
+  var title = chartG.append('text')
+    .attr('id', 'title')
+    .attr('x', w / 2 + margin.left)
+    .attr('y', 0 - (margin.top / 4))
+    .attr('text-anchor', 'middle')
+    .attr('fill', '#eee')
+    //.style('font-size', '40px')
+    .style('opacity', '0')
+    .text("Census Age Group and missing population by gender");
+
+  // Define and draw axes
+  var xAxisG = chartG.append('g')
+    .attr('class', 'x axis')
+    .attr('transform', 'translate(' + [0, h] + ')');
+
+  var yAxisG = chartG.append('g')
+    .attr('class', 'y axis');
+
+  xAxisG.transition()
+    .duration(750)
     .call(d3.axisBottom(xScale))
     .selectAll("text")
-    .text(d => getRange(d))
-    .attr("transform", "translate(-10,0)rotate(-45")
-    .style("text-anchor", "end");
+    .text(function (d) {
+      return getRange(d);
+    });
 
-  var peopleDomain = [0, d3.max(years, row => row.population)];
-
-  var yScale = d3.scaleLinear()
-    .range([height, 0])
-    .domain(peopleDomain);
-
-  svg.append("g")
+  yAxisG.transition()
+    .duration(750)
     .call(d3.axisLeft(yScale));
+  title.transition()
+    .duration(750)
+    .style('opacity', '1');
 
 
   sexDomain = [1, 2];
   var maleColor = '#42adf4';
   var femaleColor = '#ff96ca';
 
-  var color = d3.scaleOrdinal()
+  color = d3.scaleOrdinal()
     .range([maleColor, femaleColor])
     .domain(sexDomain);
 
   svg.selectAll('text')
     .style("font-family", "sans-serif")
 
-
-  title = svg.append("text")
-    .attr("transform", "translate(" + ((width + margin.left + margin.right) / 2) + "," + 20 + ")")
-    .style("text-anchor", "middle")
-    .style("font-weight", 1000)
-    .text("Census Age Group and missing population by gender");
-
   svg.append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 0 - margin.left)
-    .attr("x", 0 - (height / 2))
+    .attr("x", 0 - (h / 2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .style("font-weight", 900)
     .text("population");
 
   svg.append("text")
-    .attr("transform", "translate(" + (width / 2) + "," + (height + margin.top + 40) + ")")
+    .attr("transform", "translate(" + [(w / 2) + margin.left, (h + margin.top + 40)] + ")")
+    .attr('fill', '#eee')
     .style("text-anchor", "middle")
-    .style("font-weight", 900)
+    .style("font-size", '13px')
     .text("Age Group");
 
 
-  var legend = svg.selectAll('.legend')
+  legend = chartG.selectAll('.legend')
     .data(color.domain())
     .enter()
     .append("g")
     .attr("class", "legend")
     .attr("transform", function (d, i) {
-      return "translate(0," + (i * 20) + ")"
+      return "translate(" + [-margin.right, (i * 20)] + ")"
     })
     .style('font-family', 'sans-serif')
 
   legend.append("rect")
     .attr('class', 'legend-rect')
-    .attr("x", width + margin.right - 12)
+    .attr("x", w + margin.right - 12)
     .attr("y", 65)
     .attr("width", 12)
     .attr("height", 12)
@@ -117,8 +128,9 @@ d3.json('./years6.json').then(years => {
 
   legend.append("text")
     .attr('class', 'legend-text')
-    .attr("x", width + margin.right - 22)
+    .attr("x", w + margin.right - 22)
     .attr("y", 70)
+    .attr('fill', '#eee')
     .style('font-size', "12px")
     .attr("dy", ".35em")
     .style("text-anchor", "end")
@@ -130,18 +142,25 @@ d3.json('./years6.json').then(years => {
   }
 
 
-  var filteredData = years.filter(row => isYearAndSex(row, state.year, state.gender));
+  var filteredData = genderAgeData.filter(row => isYearAndSex(row, state.year, state.gender));
 
-  bars = svg.selectAll('.bar').data(filteredData);
+  bars = chartG.selectAll('.bar').data(filteredData);
 
   var enterbars = bars.enter()
     .append('rect')
     .attr('class', 'bar')
-    .attr('x', (d) => xScale(d.age))
-    .attr('y', (d) => yScale(d.population))
+    .attr('x', function (d) {
+      return xScale(d.age);
+    })
+    .attr('y', function (d) {
+      return yScale(d.population);
+    })
     .attr('width', xScale.bandwidth())
-    .attr('height', (d) => height - yScale(d.population))
+    .attr('height', function (d) {
+      return h - yScale(d.population);
+    })
     .attr('fill', (d) => color(d.gender));
+
   var tip = d3.tip()
     .attr('class', "d3-tip")
     .style("color", "white")
@@ -179,88 +198,136 @@ d3.json('./years6.json').then(years => {
     .style('font-weight', d => d === state.gender ? 700 : 400);
 
   legend
-    .on('click', d => updatePyramid(d, 0))
+    .on('click', d => update(d, state.year))
 
   legend
     .style('cursor', 'pointer');
 
   svg.selectAll('text').style("font-family", "sans-serif");
 
-  function updatePyramid(gender, step) {
 
-    state.gender = gender;
-    state.year += step;
+  var years = ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
+  var yearScale = d3.scaleBand().rangeRound([20, w])
+    .padding(0.1)
+    .domain(years);
 
-    var newData = years.filter(row => isYearAndSex(row, state.year, state.gender));
+  changeYear = chartG.selectAll('.changeYear')
+    .data(years)
+    .enter()
+    .append("g")
+    .attr("class", "changeYear")
+    .attr("transform", function (d, i) {
 
-    var bars = svg.selectAll('.bar')
-      .data(newData, (d) => {
-        if (d.year === state.year) {
-          return d.age - step;
-        } else {
-          return d.age;
+      return "translate(" + [yearScale(d), h + 50] + ")"
+    })
+    .style('font-family', 'sans-serif')
 
-        }
-      });
-
-    bars.enter().append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => xScale(d.age))
-      .attr('y', d => yScale(0))
-      .attr('width', xScale.bandwidth())
-      .attr('height', 0)
-      .attr('fill', d => color(d.gender))
-      .on('mouseenter', function (d) {
-        tip.show(d, this);
-        d3.select(this).style('opacity', 0.7);
-      })
-      .on('mouseout', function (d) {
-        tip.hide();
-        d3.select(this).style('opacity', 1)
-      })
-      .transition('enter-transition')
-      .duration(500)
-      .attr('y', d => yScale(d.population))
-      .attr('height', d => height - yScale(d.population))
-
-    bars.transition('update-transition')
-      .duration(500)
-      .attr('x', d => xScale(d.age))
-      .attr('y', d => yScale(d.population))
-      .attr('height', d => height - yScale(d.population))
-      .attr('fill', d => color(d.gender));
-
-    bars.exit()
-      .transition('exit-transition')
-      .duration(500)
-      .attr('height', 0)
-      .attr('y', yScale(0))
-      .remove();
-
-    // update legend
-    legend.selectAll('.legend-rect')
-      .style('opacity', d => d === state.gender ? 1 : 0.5);
-
-    legend.selectAll('.legend-text')
-      .style('opacity', d => d === state.gender ? 1 : 0.5)
-      .style('font-weight', d => d === state.gender ? 700 : 400);
-
-    // update the year text
-    document.getElementById('curr-year').textContent = state.year;
-  }
-
-  document.getElementById('curr-year').textContent = state.year;
-  document.getElementById('decrement').addEventListener('click', () => updatePyramid(state.gender, -1));
-  document.getElementById('increment').addEventListener('click', () => updatePyramid(state.gender, 1));
-  document.getElementById('switch-sex').addEventListener('click', () => updatePyramid(state.gender === 1 ? 2 : 1, 0));
+  changeYear.append("rect")
+    .attr('class', 'year')
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", 12)
+    .attr("height", 12)
+    .style("fill", '#eee');
 
 
-  d3.select('#viz')
-    .node().appendChild(container.node());
+  changeYear.append("text")
+    .attr('class', 'year-text')
+    .attr("x", 5)
+    .attr("y", 20)
+    .attr('fill', '#eee')
+    .style('font-size', "12px")
+    .attr("dy", ".35em")
+    .style("text-anchor", "middle")
+    .text(function (d) { return d; });
 
-});
+  changeYear
+    .selectAll('.year')
+    .style('opacity', d => d === state.year ? 1 : 0.5);
 
+  changeYear
+    .selectAll('.year-text')
+    .style('opacity', d => d === state.year ? 1 : 0.5)
+    .style('font-weight', d => d === state.year ? 700 : 400);
 
+  changeYear
+    .on('click', function (d) {
+      var step = +state.year - +d;
+      update(state.gender, d, step);
+    })
+
+  changeYear
+    .style('cursor', 'pointer');
+}
+
+function update(gender, year, step = 0) {
+
+  state.gender = gender;
+  state.year = year;
+
+  var newData = genderAgeData.filter(row => isYearAndSex(row, state.year, state.gender));
+
+  var bars = chartG.selectAll('.bar')
+    .data(newData, (d) => {
+      if (d.year === state.year) {
+        return d.age - step;
+      } else {
+        return d.age;
+
+      }
+    });
+
+  bars.enter().append('rect')
+    .attr('class', 'bar')
+    .attr('x', d => xScale(d.age))
+    .attr('y', d => yScale(0))
+    .attr('width', xScale.bandwidth())
+    .attr('height', 0)
+    .attr('fill', d => color(d.gender))
+    .on('mouseenter', function (d) {
+      tip.show(d, this);
+      d3.select(this).style('opacity', 0.7);
+    })
+    .on('mouseout', function (d) {
+      tip.hide();
+      d3.select(this).style('opacity', 1)
+    })
+    .transition('enter-transition')
+    .duration(500)
+    .attr('y', d => yScale(d.population))
+    .attr('height', d => h - yScale(d.population))
+
+  bars.transition('update-transition')
+    .duration(500)
+    .attr('x', d => xScale(d.age))
+    .attr('y', d => yScale(d.population))
+    .attr('height', d => h - yScale(d.population))
+    .attr('fill', d => color(d.gender));
+
+  bars.exit()
+    .transition('exit-transition')
+    .duration(500)
+    .attr('height', 0)
+    .attr('y', yScale(0))
+    .remove();
+
+  // update legend
+  legend.selectAll('.legend-rect')
+    .style('opacity', d => d === state.gender ? 1 : 0.5);
+
+  legend.selectAll('.legend-text')
+    .style('opacity', d => d === state.gender ? 1 : 0.5)
+    .style('font-weight', d => d === state.gender ? 700 : 400);
+
+  // update the year text
+  // update legend
+  changeYear.selectAll('.year')
+    .style('opacity', d => d === state.year ? 1 : 0.5);
+
+  changeYear.selectAll('.year-text')
+    .style('opacity', d => d === state.year ? 1 : 0.5)
+    .style('font-weight', d => d === state.year ? 700 : 400);
+}
 
 function isYearAndSex(row, year, gender) {
   return row.year === year && row.gender === gender;
@@ -270,5 +337,9 @@ function unique(arr) {
   return arr.filter(d => arr.indexOf((v, i) => arr.indexOf(v) === i));
 }
 
-
+function updateGenderYearVal(gender, year) {
+  state.gender = gender;
+  state.year = year;
+  updateGenderAge();
+}
 

@@ -173,6 +173,7 @@ rect {
 button {
   background-color: #328CC1;
   border: none;
+  border-radius: 8px;
   color: #eee;
   padding: 20px;
   text-align: center;
@@ -180,4 +181,8 @@ button {
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
+}
+
+#final {
+  position: relative;
 }

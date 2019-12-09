@@ -1,0 +1,39 @@
+exploit_type,control_mean,count
+sexual_exploitation,Unknown,19131
+sexual_exploitation,Not Specified,10567
+sexual_exploitation,Debt Bondage,536
+sexual_exploitation,Threats,2409
+sexual_exploitation,Psychological Abuse,2767
+sexual_exploitation,Physical Abuse,2446
+sexual_exploitation,Sexual Abuse,1207
+sexual_exploitation,Withholds Documnets,336
+sexual_exploitation,Takes Earnings,1024
+sexual_exploitation,False Promises,564
+sexual_exploitation,Restricts Movement,2651
+sexual_exploitation,Restricts Medical Care,108
+sexual_exploitation,Withholds Necessities,591
+sexual_exploitation,Psychoactive Substances,2070
+sexual_exploitation,Excessive Working Hours,58
+sexual_exploitation,Threat of Law Enforcement,118
+sexual_exploitation,Usese Children,152
+sexual_exploitation,Other,1823
+sexual_exploitation,Restricts Financial Access,128
+labour_exploitation,Unknown,9968
+labour_exploitation,Not Specified,4433
+labour_exploitation,Debt Bondage,751
+labour_exploitation,Takes Earnings,2049
+labour_exploitation,Threats,1592
+labour_exploitation,Psychological Abuse,1909
+labour_exploitation,Physical Abuse,1052
+labour_exploitation,False Promises,2103
+labour_exploitation,Restricts Movement,1754
+labour_exploitation,Restricts Medical Care,948
+labour_exploitation,Excessive Working Hours,1941
+labour_exploitation,Threat of Law Enforcement,843
+labour_exploitation,Withholds Necessities,912
+labour_exploitation,Withholds Documnets,1626
+labour_exploitation,Psychoactive Substances,43
+labour_exploitation,Sexual Abuse,46
+labour_exploitation,Other,286
+labour_exploitation,Restricts Financial Access,44
+labour_exploitation,Usese Children,8

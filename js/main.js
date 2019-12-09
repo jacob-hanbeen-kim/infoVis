@@ -1,11 +1,9 @@
 // set the dimensions and margins of the graph
 width = getDivWidth('visualization') - 30;
-//height = 700;
-// height = getDivWidth('graphic');
-// height = height - height * .3;
 height = 700;
-
 margin = { top: 20, right: 30, bottom: 20, left: 30 };
+
+topZ = document.getElementById('visualization');
 
 // svg
 svg = d3.select("svg");
@@ -40,14 +38,24 @@ function mocDataProcessor(row) {
     };
 }
 
+function genderAgeDataProcessor(row) {
+    return {
+        year: row['year'],
+        gender: +row['gender'],
+        age: +row['age'],
+        population: +row['population']
+    }
+}
 // Read the data
 Promise.all([
-    d3.csv('cleanData.csv', mainDataPreprocessor),
-    d3.csv('meansOfControl.csv', mocDataProcessor)
+    d3.csv('../datas/cleanData.csv', mainDataPreprocessor),
+    d3.csv('../datas/meansOfControl.csv', mocDataProcessor),
+    d3.csv('../datas/genderAge.csv', genderAgeDataProcessor)
 ]).then(function (data) {
 
     humanTraffickingData = data[0];
     meansOfControlData = data[1];
+    genderAgeData = data[2];
 
     var offset = '30%';
     var offset2 = '40%';
@@ -73,6 +81,11 @@ Promise.all([
     fadeIn('typeOfExploitation3', '20%');
     fadeIn('typeOfExploitation4', '20%');
     fadeIn('typeOfExploitation5', '20%');
+    scroll('gender1', '60%', clearSourceToTarget, updateMeansOfControl, [], ['labour_exploitation', true]);
+    scroll('gender2', '60%', updateGenderAge, clearSourceToTarget, [], []);
+    scroll('gender3', '60%', updateGenderYearVal, updateGenderYearVal, [1, '2005'], [2, '2002']);
+    scroll('gender4', '60%', updateGenderYearVal, updateGenderYearVal, [1, '2015'], [1, '2005']);
+    scroll('gender5', '60%', updateGenderYearVal, updateGenderYearVal, [2, '2002'], [1, '2015']);
     // scroll('typeOfExploitation6', offset2, updateTypoeOfExploit, updateTypoeOfExploit2, ['2016', true], []);
     scroll('sourceToTarget1', '60%', clearSourceToTarget, updateTypoeOfExploit2, [], []);
     fadeIn('sourceToTarget2', '60%');
@@ -82,6 +95,8 @@ Promise.all([
     scroll('sourceToTarget5', offset2, updateSourceToTarget, updateSourceToTarget, ['2016', true, true, true], ['2002', true, true, true], '60%');
     scroll('sourceToTarget6', offset2, updateSourceToTarget, updateSourceToTarget, ['2002', true], ['2016', true, true, true], '60%');
 
+    //bringforward('final');
+    scroll('final', offset2, bringforward, bringforward, ['final'], ['visualization']);
     scroll('final', offset2, clearSourceToTarget, updateSourceToTarget, [], ['2002', true]);
 });
 
@@ -123,20 +138,14 @@ function scroll(n, offset, func1, func2, param1, param2, offset2 = "") {
         element: document.getElementById(n),
         handler: function (direction) {
             direction == 'down' ? func1(param1[0], param1[1], param1[2], param1[3]) : func2(param2[0], param2[1], param2[2], param2[3]);
-            // if (param1.length == 1 && param2.length == 0) {
-            //     direction == 'down' ? func1(param1[0]) : func2();
-            // } else if (param1.length == 2 && param2.length == 0) {
-            //     direction == 'down' ? func1(param1[0], param1[1]) : func2();
-            // } else if (param1.length == 1 && param2.length == 1) {
-            //     direction == 'down' ? func1(param1[0]) : func2(param2[0]);
-            // } else if (param1.length == 1 && param2.length == 2) {
-            //     direction == 'down' ? func1(param1[0]) : func2(param2[0], param2[1]);
-            // } else if (param1.length == 2 && param2.length == 1) {
-            //     direction == 'down' ? func1(param1[0], param1[1]) : func2(param2[0]);
-            // } else {
-            //     direction == 'down' ? func1(param1[0], param1[1]) : func2(param2[0], param2[1]);
-            // }
         },
         offset: offset
     })
+}
+
+function bringforward(divId) {
+    var newTop = document.getElementById(divId);
+    newTop.style.zIndex = topZ.style.zIndex;
+    topZ.style.zIndex -= 1;
+    topZ = newTop;
 }

@@ -4,7 +4,7 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v5.min.js"></script>
-
+<script src="./js/d3-tip.js"></script>
 
 <!--jQuery-->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -71,8 +71,10 @@
     <div class="story" id="story5">
         <h2 class="narrative">
             Over the course of 2002 to 2018,
-            <span style="color: #CF6766">over 50,000</span>
-            number of people were reported as a victim of human trafficking.
+            <strong>
+                <span style="color: #CF6766">over 50,000</span>
+            </strong>
+            people were reported as a victim of human trafficking.
         </h2>
     </div>
     <div class="story" id="story6">
@@ -126,16 +128,19 @@
                 </h2>
             </div>
             <div class="fullWidth" id="meansOfControl2">
-                <h2>Traffickers use various means of control to exploit the victims. Some of these includes: Psychological Abuse,
-                    Threats, False Promises, Debt Bondages, Use of Children, and more. Traffickers utilize specific means
-                    of control that is most suitable for the targeted victims. We observed how type of exploitation changes
-                    the means of control, and saw a clear differences.
+                <h2>Traffickers use various means of control to exploit the victims. Some of these includes:
+                    <span style="color: #CF6766">Psychological Abuse</span>,
+                    <span style="color: #CF6766">Threats</span>,
+                    <span style="color: #CF6766">False Promises</span>,
+                    <span style="color: #CF6766">Debt Bondages</span>,
+                    <span style="color: #CF6766">Use of Children</span>, and more. Traffickers utilize specific means of control that is most suitable
+                    for the targeted victims. We observed how type of exploitation changes the means of control.
                 </h2>
             </div>
             <div class="content" id="meansOfControl3">
                 <h2>The most popular means of control for
-                    <span style="color: #69b3a2">Sexual Exploitation</span> was
-                    <span style="color: #CF6766">"Psychological Abuse"</span>. Followed by Restricts Movement, Physical Abuse, and Threats.
+                    <span style="color: #CF6766">Sexual Exploitation</span> was
+                    <span style="color: #69b3a2">"Psychological Abuse"</span>. Followed by Restricts Movement, Physical Abuse, and Threats.
                 </h2>
             </div>
             <div class="content" id="meansOfControl4">
@@ -150,8 +155,8 @@
             </div>
             <div class="content" id="meansOfControl6">
                 <h2>On the other hand, most popular means of control for
-                    <span style="color: #69b3a2">Labour Exploitation</span> was
-                    <span style="color: #CF6766">"False Promises"</span>. Followed by Takes Earnings, Excessive Working Hours, and Psychological Abuse.
+                    <span style="color: #CF6766">Labour Exploitation</span> was
+                    <span style="color: #69b3a2">"False Promises"</span>. Followed by Takes Earnings, Excessive Working Hours, and Psychological Abuse.
                 </h2>
             </div>
             <div class="content" id="meansOfControl7">
@@ -164,8 +169,14 @@
                 </h2>
             </div>
             <div class="fullWidth" id="typeOfExploitation1">
-                <h2>People can be trafficked for many different forms of exploitation such as forced prostitution, forced labour,
-                    forced begging, forced criminality, domestic servitude, forced marraige, and forced organ removal.
+                <h2>People can be trafficked for many different forms of exploitation such as
+                    <span style="color: #69b3a2">forced prostitution</span>,
+                    <span style="color: #69b3a2">forced labour</span>,
+                    <span style="color: #69b3a2">forced begging</span>,
+                    <span style="color: #69b3a2">forced criminality</span>,
+                    <span style="color: #69b3a2">domestic servitude</span>,
+                    <span style="color: #69b3a2">forced marraige</span>, and
+                    <span style="color: #69b3a2">forced organ removal</span>.
                 </h2>
             </div>
             <div class="content" id="typeOfExploitation2">
@@ -178,7 +189,7 @@
             <div class="content" id="typeOfExploitation3">
                 <h2>But starting on
                     <strong>2005</strong>,
-                    <span style="color: #CF6766">Forced Labour</span>
+                    <span style="color: #69b3a2">Forced Labour</span>
                     starts making its appearance.
                 </h2>
             </div>
@@ -189,9 +200,29 @@
             </div>
             <div class="content" id="typeOfExploitation5">
                 <h2>Although
-                    <span style="color: #CF6766">Forced Labour</span> gained trenmendous popularity,
+                    <span style="color: #69b3a2">Forced Labour</span> gained trenmendous popularity,
                     <span style="color: #CF6766">Sexual Exploit</span> still stand as most popular form of exploitation.
                 </h2>
+            </div>
+            <div class="fullWidth" id="gender1">
+                <h2>As the trend for the type of exploit changed over time, the deman for specific age and gender of people changed
+                    over time too.</h2>
+            </div>
+            <div class="content" id="gender2">
+                <h2>Initially, on
+                    <strong>2002</strong> there were no demand for Males. Only Females were the victim of the human trafficking</h2>
+            </div>
+            <div class="content" id="gender3">
+                <h2>Starting on
+                    <strong>2005</strong> underaged males, boys, were starting to become the victim of human trafficking</h2>
+            </div>
+            <div class="content" id="gender4">
+                <h2>By
+                    <strong>2015</strong> Males were regularly exploit as well, but age range shifted toward 30-38 as the force labour
+                    gained popularity over time</h2>
+            </div>
+            <div class="content" id="gender5">
+                <h2>Explore!
             </div>
             <!-- <div class="content" id="typeOfExploitation6">
                 <h2>Now, let's observe year
@@ -250,7 +281,7 @@
                     By 2016, where most human trafficking occured,
                     <strong>PH</strong> became the main source of human trafficking, with more than
                     <strong>15</strong> country working as source of human trafficking, and more than
-                    <strong>12</strong> target countries. Furthermore, we see tremendous amount of victims trafficked in
+                    <strong>12</strong> countries as the target. Furthermore, we see tremendous amount of victims trafficked in
                     <strong>unknown</strong>.
                 </h2>
             </div>
@@ -285,7 +316,7 @@
                     and many are still suffering on site.
                 </h2>
                 <br/>
-                <button onclick="location.href='https://polarisproject.org/victims-traffickers'" type="button">Act Now!</button>
+                <button onclick="location.href='https://polarisproject.org/victims-traffickers';" type="button">ACT NOW!</button>
             </div>
         </div>
 
@@ -299,8 +330,9 @@
 
 <canvas width="640" height="3250"></canvas>
 
-<!-- <script src="./js/populationpyramid.js"></script> -->
 <script src="./js/sourceToTarget.js"></script>
+<script src="./js/genderOverYear.js"></script>
+<script src="./js/populationpyramid.js"></script>
 <script src="./js/typeOfExploit.js"></script>
 <script src="./js/typeOfExploit2.js"></script>
 <script src="./js/meansOfControl.js"></script>
