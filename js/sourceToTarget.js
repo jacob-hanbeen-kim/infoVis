@@ -232,7 +232,7 @@ function onYearChanged() {
 function loadSrcToDstAll() {
     svg.selectAll('*').remove();
     svg.append('image')
-        .attr('xlink:href', '../srcTodstAll.png')
+        .attr('xlink:href', '../resources/srcTodstAll.png')
         .attr('width', '50%')
         .attr('height', '100%');
 }
