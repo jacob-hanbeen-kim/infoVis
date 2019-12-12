@@ -207,57 +207,65 @@ function updateGenderAge() {
 
 
   var years = ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
-  var yearScale = d3.scaleBand().rangeRound([20, w])
-    .padding(0.1)
-    .domain(years);
+  var yearScale = d3.scaleBand()
+    .domain(years)
+    .range([0, w]);
 
-  changeYear = chartG.selectAll('.changeYear')
+
+  var slider = chartG.append("g")
+    .attr("class", "slider")
+    .attr("transform", "translate(" + [30, 0] + ")");
+
+  slider.append("line")
+    .attr("class", "track")
+    .attr("x1", yearScale.range()[0])
+    .attr("x2", yearScale.range()[1] - yearScale.step())
+    .select(function () { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-inset")
+    .select(function () { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-overlay")
+    .call(d3.drag()
+      .on("start.interrupt", function () { slider.interrupt(); })
+      .on("start drag", function () {
+        var eachBand = yearScale.step();
+        var index = Math.round((d3.event.x / eachBand));
+        var d = yearScale.domain()[index];
+
+        var step = +state.year - +d;
+        handle.attr("cx", yearScale(d));
+        label
+          .attr("x", yearScale(d))
+          .text(d);
+        update(state.gender, d, step);
+      })
+    );
+
+  slider.insert("g", ".track-overlay")
+    .attr("class", "ticks")
+    .attr("transform", "translate(0," + 18 + ")")
+    .selectAll("text")
     .data(years)
     .enter()
-    .append("g")
-    .attr("class", "changeYear")
-    .attr("transform", function (d, i) {
-
-      return "translate(" + [yearScale(d), h + 50] + ")"
-    })
-    .style('font-family', 'sans-serif')
-
-  changeYear.append("rect")
-    .attr('class', 'year')
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", 12)
-    .attr("height", 12)
-    .style("fill", '#eee');
-
-
-  changeYear.append("text")
-    .attr('class', 'year-text')
-    .attr("x", 5)
-    .attr("y", 20)
-    .attr('fill', '#eee')
-    .style('font-size', "12px")
-    .attr("dy", ".35em")
-    .style("text-anchor", "middle")
+    .append("text")
+    .attr("x", yearScale)
+    .attr("y", 10)
+    .attr("fill", "#eee")
+    .attr("text-anchor", "middle")
     .text(function (d) { return d; });
 
-  changeYear
-    .selectAll('.year')
-    .style('opacity', d => d === state.year ? 1 : 0.5);
+  var handle = slider.insert("circle", ".track-overlay")
+    .attr("class", "handle")
+    .attr("fill", "#eee")
+    .attr("cx", yearScale(state.year))
+    .attr("r", 9);
 
-  changeYear
-    .selectAll('.year-text')
-    .style('opacity', d => d === state.year ? 1 : 0.5)
-    .style('font-weight', d => d === state.year ? 700 : 400);
-
-  changeYear
-    .on('click', function (d) {
-      var step = +state.year - +d;
-      update(state.gender, d, step);
-    })
-
-  changeYear
-    .style('cursor', 'pointer');
+  var label = slider.append("text")
+    .attr("class", "label")
+    .attr("text-anchor", "middle")
+    .attr("fill", "#eee")
+    .text(state.year)
+    .attr("x", yearScale(state.year))
+    .attr("transform", "translate(0," + (-25) + ")")
 }
 
 function update(gender, year, step = 0) {
@@ -320,13 +328,6 @@ function update(gender, year, step = 0) {
     .style('font-weight', d => d === state.gender ? 700 : 400);
 
   // update the year text
-  // update legend
-  changeYear.selectAll('.year')
-    .style('opacity', d => d === state.year ? 1 : 0.5);
-
-  changeYear.selectAll('.year-text')
-    .style('opacity', d => d === state.year ? 1 : 0.5)
-    .style('font-weight', d => d === state.year ? 700 : 400);
 }
 
 function isYearAndSex(row, year, gender) {

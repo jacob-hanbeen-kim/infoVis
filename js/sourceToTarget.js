@@ -13,6 +13,53 @@ function updateSourceToTarget(year, removeAll = false, enableMouseover = true, h
         svg.selectAll('*').remove();
     }
 
+    var years = ['2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
+    var yearScale = d3.scaleBand()
+        .domain(years)
+        .range([0, width - margin.right]);
+
+
+    var slider = svg.append("g")
+        .attr("class", "slider")
+        .attr("transform", "translate(" + [margin.left, height + margin.top] + ")");
+
+    slider.append("line")
+        .attr("class", "track")
+        .attr("x1", yearScale.range()[0])
+        .attr("x2", yearScale.range()[1] - yearScale.step())
+        .select(function () { return this.parentNode.appendChild(this.cloneNode(true)); })
+        .attr("class", "track-inset")
+        .select(function () { return this.parentNode.appendChild(this.cloneNode(true)); })
+        .attr("class", "track-overlay")
+        .call(d3.drag()
+            .on("start.interrupt", function () { slider.interrupt(); })
+            .on("start drag", function () {
+                var eachBand = yearScale.step();
+                var index = Math.round((d3.event.x / eachBand));
+                var d = yearScale.domain()[index];
+                updateSourceToTarget(d, true);
+            })
+        );
+
+    slider.insert("g", ".track-overlay")
+        .attr("class", "ticks")
+        .attr("transform", "translate(0," + 18 + ")")
+        .selectAll("text")
+        .data(years)
+        .enter()
+        .append("text")
+        .attr("x", yearScale)
+        .attr("y", 10)
+        .attr("fill", "#eee")
+        .attr("text-anchor", "middle")
+        .text(function (d) { return d; });
+
+    var handle = slider.insert("circle", ".track-overlay")
+        .attr("class", "handle")
+        .attr("fill", "#eee")
+        .attr("cx", yearScale(year))
+        .attr("r", 9);
+
     var filteredData = humanTraffickingData.filter(function (d) {
         if (year == "allYears") {
             return true;
